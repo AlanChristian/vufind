@@ -59,7 +59,7 @@ class PrimorecordController extends AbstractRecord
      */
     protected function resultScrollerActive()
     {
-        $config = $this->getServiceLocator()->get('VuFind\Config')->get('Primo');
+        $config = $this->getServiceLocator()->get('VuFind\Config')->get('Summon');
         return (isset($config->Record->next_prev_navigation)
             && $config->Record->next_prev_navigation);
     }
