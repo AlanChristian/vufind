@@ -267,11 +267,8 @@ class NoILS extends AbstractBase implements TranslatorAwareInterface
     public function hasHoldings($id)
     {
         $useHoldings = isset($this->config['settings']['useHoldings'])
-            ? $this->config['settings']['useHoldings'] : '';
-
-        // "none" will be processed differently in the config depending
-        // on whether it's in or out of quotes; handle both cases.
-        return $useHoldings != 'none' && !empty($useHoldings);
+            ? $this->config['settings']['useHoldings'] : 'none';
+        return $useHoldings == 'none';
     }
 
 
