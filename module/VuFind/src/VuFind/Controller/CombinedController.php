@@ -102,18 +102,11 @@ class CombinedController extends AbstractSearch
         ) {
             $html = '';
         } else {
-            $cart = $this->getServiceLocator()->get('VuFind\Cart');
-            $general = $this->getServiceLocator()->get('VuFind\Config')
-                ->get('config');
-            $viewParams = array(
-              'searchClassId' => $searchClassId,
-              'currentSearch' => $settings,
-              'showCartControls' => $currentOptions->supportsCart()
-                && $cart->isActive()
-            );
             $html = $this->getViewRenderer()->render(
                 'combined/results-list.phtml',
-                $viewParams
+                array(
+                    'searchClassId' => $searchClassId, 'currentSearch' => $settings
+                )
             );
         }
         $response->setContent($html);
@@ -150,7 +143,6 @@ class CombinedController extends AbstractSearch
         $config = $this->getServiceLocator()->get('VuFind\Config')->get('combined')
             ->toArray();
         $supportsCart = false;
-        $supportsCartOptions = array();
         foreach ($config as $current => $settings) {
             // Special case -- ignore recommendation config:
             if ($current == 'Layout' || $current == 'RecommendationModules') {
@@ -158,9 +150,8 @@ class CombinedController extends AbstractSearch
             }
             $this->adjustQueryForSettings($settings);
             $currentOptions = $options->get($current);
-            $supportsCartOptions[] = $currentOptions->supportsCart();
             if ($currentOptions->supportsCart()) {
-              $supportsCart = true;
+                $supportsCart = true;
             }
             list($controller, $action)
                 = explode('-', $currentOptions->getSearchAction());
@@ -184,16 +175,23 @@ class CombinedController extends AbstractSearch
         && intval($config['Layout']['columns']) <= count($combinedResults)
             ? intval($config['Layout']['columns'])
             : count($combinedResults);
+        $placement = isset($config['Layout']['stack_placement'])
+            ? $config['Layout']['stack_placement']
+            : 'distributed';
+        if (!in_array($placement, array('distributed', 'left', 'right'))) {
+            $placement = 'distributed';
+        }
 
         // Build view model:
         return $this->createViewModel(
             array(
                 'columns' => $columns,
                 'combinedResults' => $combinedResults,
+                'config' => $config,
                 'params' => $params,
+                'placement' => $placement,
                 'results' => $results,
                 'supportsCart' => $supportsCart,
-                'supportsCartOptions' => $supportsCartOptions
             )
         );
     }
@@ -249,4 +247,3 @@ class CombinedController extends AbstractSearch
         $query->noRecommend = 1;
     }
 }
-
