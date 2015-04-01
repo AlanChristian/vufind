@@ -54,10 +54,12 @@ class TagController extends AbstractSearch
      */
     public function homeAction()
     {
-        if (!$this->tagsEnabled()) {
-            throw new \Exception('Tags disabled');
-        }
         return $this->resultsAction();
+    }
+    
+    public function tagCloudAction() {
+        // no action needed
+        return $this->createViewModel();
     }
 }
 
