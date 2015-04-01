@@ -172,9 +172,9 @@ class Loader implements \Zend\Log\LoggerAwareInterface
         $this->apiManager = $manager;
         $this->themeTools = $theme;
         $this->client = $client;
-        $this->baseDir = rtrim(
-            is_null($baseDir) ? sys_get_temp_dir() : $baseDir, '\\/'
-        );
+        $this->baseDir = (null === $baseDir)
+            ? rtrim(sys_get_temp_dir(), '\\/') . '/covers'
+            : rtrim($baseDir, '\\/');
     }
 
     /**
@@ -211,7 +211,7 @@ class Loader implements \Zend\Log\LoggerAwareInterface
     public function getImage()
     {
         // No image loaded?  Use "unavailable" as default:
-        if (is_null($this->image)) {
+        if (null === $this->image) {
             $this->loadUnavailable();
         }
         return $this->image;
@@ -225,12 +225,12 @@ class Loader implements \Zend\Log\LoggerAwareInterface
     public function getContentType()
     {
         // No content type loaded?  Use "unavailable" as default:
-        if (is_null($this->contentType)) {
+        if (null === $this->contentType) {
             $this->loadUnavailable();
         }
         return $this->contentType;
     }
-    
+
     /**
      * Get Cover Generator Object
      *
@@ -238,8 +238,12 @@ class Loader implements \Zend\Log\LoggerAwareInterface
      */
     public function getCoverGenerator()
     {
-        return new \VuFind\Cover\Generator($this->themeTools);
+        return new \VuFind\Cover\Generator(
+            $this->themeTools,
+            array('mode'=>$this->config->Content->makeDynamicCovers)
+        );
     }
+
     /**
      * Load an image given an ISBN and/or content type.
      *
@@ -277,7 +281,7 @@ class Loader implements \Zend\Log\LoggerAwareInterface
             && !$this->fetchFromContentType()
         ) {
             if (isset($this->config->Content->makeDynamicCovers)
-                && true == $this->config->Content->makeDynamicCovers
+                && false !== $this->config->Content->makeDynamicCovers
             ) {
                 $this->image = $this->getCoverGenerator()
                     ->generate($title, $author, $callnumber);
@@ -402,7 +406,7 @@ class Loader implements \Zend\Log\LoggerAwareInterface
      */
     protected function getCachePath($size, $id, $extension = 'jpg')
     {
-        $base = $this->baseDir . '/covers';
+        $base = $this->baseDir;
         if (!is_dir($base)) {
             mkdir($base);
         }
