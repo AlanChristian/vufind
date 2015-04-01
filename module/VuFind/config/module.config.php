@@ -1,63 +1,74 @@
 <?php
+
 namespace VuFind\Module\Config;
 
 $config = array(
     'router' => array(
         'routes' => array(
             'default' => array(
-                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route'    => '/[:controller[/[:action]]]',
+                    'route' => '/[:controller[/[:action]]]',
                     'constraints' => array(
                         'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     ),
                     'defaults' => array(
                         'controller' => 'index',
-                        'action'     => 'Home',
+                        'action' => 'Home',
                     ),
                 ),
             ),
             'legacy-alphabrowse-results' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
-                    'route'    => '/AlphaBrowse/Results',
+                    'route' => '/AlphaBrowse/Results',
                     'defaults' => array(
                         'controller' => 'Alphabrowse',
-                        'action'     => 'Home',
+                        'action' => 'Home',
                     )
                 )
             ),
             'legacy-bookcover' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
-                    'route'    => '/bookcover.php',
+                    'route' => '/bookcover.php',
                     'defaults' => array(
                         'controller' => 'cover',
-                        'action'     => 'Show',
+                        'action' => 'Show',
                     )
                 )
             ),
             'legacy-summonrecord' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
-                    'route'    => '/Summon/Record',
+                    'route' => '/Summon/Record',
                     'defaults' => array(
                         'controller' => 'SummonRecord',
-                        'action'     => 'Home',
+                        'action' => 'Home',
                     )
                 )
             ),
             'legacy-worldcatrecord' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
-                    'route'    => '/WorldCat/Record',
+                    'route' => '/WorldCat/Record',
                     'defaults' => array(
                         'controller' => 'WorldcatRecord',
-                        'action'     => 'Home',
+                        'action' => 'Home',
                     )
                 )
-            )
+            ),
+            'tags' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/Tag[/:action]',
+                    'defaults' => array(
+                        'controller' => 'Tag',
+                        'action' => 'tagCloud',
+                    )
+                )
+            ),
         ),
     ),
     'controllers' => array(
@@ -94,6 +105,7 @@ $config = array(
             'primo' => 'VuFind\Controller\PrimoController',
             'primorecord' => 'VuFind\Controller\PrimorecordController',
             'qrcode' => 'VuFind\Controller\QRCodeController',
+            'rbp' => 'VuFind\Controller\RbpController',
             'records' => 'VuFind\Controller\RecordsController',
             'search' => 'VuFind\Controller\SearchController',
             'summon' => 'VuFind\Controller\SummonController',
@@ -155,8 +167,8 @@ $config = array(
         ),
         'invokables' => array(
             'VuFind\SessionManager' => 'Zend\Session\SessionManager',
-            'VuFind\Search'         => 'VuFindSearch\Service',
-            'VuFind\Search\Memory'  => 'VuFind\Search\Memory',
+            'VuFind\Search' => 'VuFindSearch\Service',
+            'VuFind\Search\Memory' => 'VuFind\Search\Memory',
         ),
         'initializers' => array(
             'VuFind\ServiceManager\Initializer::initInstance',
@@ -174,10 +186,10 @@ $config = array(
     ),
     'view_manager' => array(
         'display_not_found_reason' => APPLICATION_ENV == 'development',
-        'display_exceptions'       => APPLICATION_ENV == 'development',
-        'not_found_template'       => 'error/404',
-        'exception_template'       => 'error/index',
-        'template_path_stack'      => array(),
+        'display_exceptions' => APPLICATION_ENV == 'development',
+        'not_found_template' => 'error/404',
+        'exception_template' => 'error/index',
+        'template_path_stack' => array(),
     ),
     // This section contains all VuFind-specific settings (i.e. configurations
     // unrelated to specific Zend Framework 2 components).
@@ -187,17 +199,17 @@ $config = array(
             'abstract_factories' => array('VuFind\Config\PluginFactory'),
         ),
         // PostgreSQL sequence mapping
-        'pgsql_seq_mapping'  => array(
-            'comments'       => array('id', 'comments_id_seq'),
+        'pgsql_seq_mapping' => array(
+            'comments' => array('id', 'comments_id_seq'),
             'oai_resumption' => array('id', 'oai_resumption_id_seq'),
-            'resource'       => array('id', 'resource_id_seq'),
-            'resource_tags'  => array('id', 'resource_tags_id_seq'),
-            'search'         => array('id', 'search_id_seq'),
-            'session'        => array('id', 'session_id_seq'),
-            'tags'           => array('id', 'tags_id_seq'),
-            'user'           => array('id', 'user_id_seq'),
-            'user_list'      => array('id', 'user_list_id_seq'),
-            'user_resource'  => array('id', 'user_resource_id_seq')
+            'resource' => array('id', 'resource_id_seq'),
+            'resource_tags' => array('id', 'resource_tags_id_seq'),
+            'search' => array('id', 'search_id_seq'),
+            'session' => array('id', 'session_id_seq'),
+            'tags' => array('id', 'tags_id_seq'),
+            'user' => array('id', 'user_id_seq'),
+            'user_list' => array('id', 'user_list_id_seq'),
+            'user_resource' => array('id', 'user_resource_id_seq')
         ),
         // This section contains service manager configurations for all VuFind
         // pluggable components:
@@ -368,6 +380,7 @@ $config = array(
                     'authorityrecommend' => 'VuFind\Recommend\Factory::getAuthorityRecommend',
                     'catalogresults' => 'VuFind\Recommend\Factory::getCatalogResults',
                     'collectionsidefacets' => 'VuFind\Recommend\Factory::getCollectionSideFacets',
+                    'dplaterms' => 'VuFind\Recommend\Factory::getDPLATerms',
                     'europeanaresults' => 'VuFind\Recommend\Factory::getEuropeanaResults',
                     'expandfacets' => 'VuFind\Recommend\Factory::getExpandFacets',
                     'favoritefacets' => 'VuFind\Recommend\Factory::getFavoriteFacets',
@@ -426,6 +439,7 @@ $config = array(
                     'map' => 'VuFind\RecordTab\Factory::getMap',
                     'reviews' => 'VuFind\RecordTab\Factory::getReviews',
                     'usercomments' => 'VuFind\RecordTab\Factory::getUserComments',
+                    'preview' => 'VuFind\RecordTab\Factory::getPreview',
                 ),
                 'invokables' => array(
                     'description' => 'VuFind\RecordTab\Description',
@@ -546,14 +560,15 @@ $config = array(
                     'Description' => 'Description',
                     'TOC' => 'TOC', 'UserComments' => 'UserComments',
                     'Reviews' => 'Reviews', 'Excerpt' => 'Excerpt',
+                    'Preview' => 'preview',
                     'Details' => 'StaffViewArray',
                 ),
                 'defaultTab' => null,
             ),
             'VuFind\RecordDriver\Pazpar2' => array(
-                'tabs' => array (
+                'tabs' => array(
                     'Details' => 'StaffViewMARC',
-                 ),
+                ),
                 'defaultTab' => null,
             ),
             'VuFind\RecordDriver\Primo' => array(
@@ -561,21 +576,23 @@ $config = array(
                     'Description' => 'Description',
                     'TOC' => 'TOC', 'UserComments' => 'UserComments',
                     'Reviews' => 'Reviews', 'Excerpt' => 'Excerpt',
+                    'Preview' => 'preview',
                     'Details' => 'StaffViewArray',
                 ),
                 'defaultTab' => null,
             ),
             'VuFind\RecordDriver\SolrAuth' => array(
-                'tabs' => array (
+                'tabs' => array(
                     'Details' => 'StaffViewMARC',
-                 ),
+                ),
                 'defaultTab' => null,
             ),
             'VuFind\RecordDriver\SolrDefault' => array(
-                'tabs' => array (
+                'tabs' => array(
                     'Holdings' => 'HoldingsILS', 'Description' => 'Description',
                     'TOC' => 'TOC', 'UserComments' => 'UserComments',
                     'Reviews' => 'Reviews', 'Excerpt' => 'Excerpt',
+                    'Preview' => 'preview',
                     'HierarchyTree' => 'HierarchyTree', 'Map' => 'Map',
                     'Details' => 'StaffViewArray',
                 ),
@@ -586,6 +603,7 @@ $config = array(
                     'Holdings' => 'HoldingsILS', 'Description' => 'Description',
                     'TOC' => 'TOC', 'UserComments' => 'UserComments',
                     'Reviews' => 'Reviews', 'Excerpt' => 'Excerpt',
+                    'Preview' => 'preview',
                     'HierarchyTree' => 'HierarchyTree', 'Map' => 'Map',
                     'Details' => 'StaffViewMARC',
                 ),
@@ -596,12 +614,13 @@ $config = array(
                     'Description' => 'Description',
                     'TOC' => 'TOC', 'UserComments' => 'UserComments',
                     'Reviews' => 'Reviews', 'Excerpt' => 'Excerpt',
+                    'Preview' => 'preview',
                     'Details' => 'StaffViewArray',
                 ),
                 'defaultTab' => null,
             ),
             'VuFind\RecordDriver\WorldCat' => array(
-                'tabs' => array (
+                'tabs' => array(
                     'Holdings' => 'HoldingsWorldCat', 'Description' => 'Description',
                     'TOC' => 'TOC', 'UserComments' => 'UserComments',
                     'Reviews' => 'Reviews', 'Excerpt' => 'Excerpt',
@@ -684,32 +703,32 @@ $staticRoutes = array(
 foreach ($recordRoutes as $routeBase => $controller) {
     // catch-all "tab" route:
     $config['router']['routes'][$routeBase] = array(
-        'type'    => 'Zend\Mvc\Router\Http\Segment',
+        'type' => 'Zend\Mvc\Router\Http\Segment',
         'options' => array(
-            'route'    => '/' . $controller . '/[:id[/:tab]]',
+            'route' => '/' . $controller . '/[:id[/:tab]]',
             'constraints' => array(
                 'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
+                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
             ),
             'defaults' => array(
                 'controller' => $controller,
-                'action'     => 'Home',
+                'action' => 'Home',
             )
         )
     );
     // special non-tab actions that each need their own route:
     foreach ($nonTabRecordActions as $action) {
         $config['router']['routes'][$routeBase . '-' . strtolower($action)] = array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type' => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route'    => '/' . $controller . '/[:id]/' . $action,
+                'route' => '/' . $controller . '/[:id]/' . $action,
                 'constraints' => array(
                     'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                 ),
                 'defaults' => array(
                     'controller' => $controller,
-                    'action'     => $action,
+                    'action' => $action,
                 )
             )
         );
@@ -719,16 +738,16 @@ foreach ($recordRoutes as $routeBase => $controller) {
 // Build list routes
 foreach ($listRoutes as $routeName => $action) {
     $config['router']['routes'][$routeName] = array(
-        'type'    => 'Zend\Mvc\Router\Http\Segment',
+        'type' => 'Zend\Mvc\Router\Http\Segment',
         'options' => array(
-            'route'    => '/MyResearch/' . $action . '/[:id]',
+            'route' => '/MyResearch/' . $action . '/[:id]',
             'constraints' => array(
                 'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
+                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
             ),
             'defaults' => array(
                 'controller' => 'MyResearch',
-                'action'     => $action,
+                'action' => $action,
             )
         )
     );
@@ -741,10 +760,10 @@ foreach ($staticRoutes as $route) {
     $config['router']['routes'][$routeName] = array(
         'type' => 'Zend\Mvc\Router\Http\Literal',
         'options' => array(
-            'route'    => '/' . $route,
+            'route' => '/' . $route,
             'defaults' => array(
                 'controller' => $controller,
-                'action'     => $action,
+                'action' => $action,
             )
         )
     );
@@ -754,10 +773,10 @@ foreach ($staticRoutes as $route) {
 $config['router']['routes']['home'] = array(
     'type' => 'Zend\Mvc\Router\Http\Literal',
     'options' => array(
-        'route'    => '/',
+        'route' => '/',
         'defaults' => array(
             'controller' => 'index',
-            'action'     => 'Home',
+            'action' => 'Home',
         )
     )
 );
