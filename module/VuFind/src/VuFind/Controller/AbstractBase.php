@@ -237,7 +237,6 @@ class AbstractBase extends AbstractActionController
      */
     protected function delightboxURL($url)
     {
-        // If this isn't a lightbox URL, we don't want to mess with it!
         $parts = parse_url($url);
         parse_str($parts['query'], $query);
         if (false === strpos($parts['path'], '/AJAX/JSON')) {
