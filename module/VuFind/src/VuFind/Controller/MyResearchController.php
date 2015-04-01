@@ -113,12 +113,7 @@ class MyResearchController extends AbstractBase
         // or default action (if no followup provided):
         if ($url = $this->getFollowupUrl()) {
             $this->clearFollowupUrl();
-            // If a user clicks on the "Your Account" link, we want to be sure
-            // they get to their account rather than being redirected to an old
-            // followup URL. We'll use a redirect=0 GET flag to indicate this:
-            if ($this->params()->fromQuery('redirect', true)) {
-                return $this->redirect()->toUrl($url);
-            }
+            return $this->redirect()->toUrl($url);
         }
 
         $config = $this->getConfig();
@@ -248,14 +243,8 @@ class MyResearchController extends AbstractBase
                 $logoutTarget = $this->getServerUrl('home');
             }
 
-            // If there is an auth_method parameter in the query, we should strip
-            // it out. Otherwise, the user may get stuck in an infinite loop of
-            // logging out and getting logged back in when using environment-based
-            // authentication methods like Shibboleth.
-            $logoutTarget = preg_replace(
-                '/([?&])auth_method=[^&]*&?/', '$1', $logoutTarget
-            );
-            $logoutTarget = rtrim($logoutTarget, '?');
+            // clear querystring parameters
+            $logoutTarget = preg_replace('/\?.*/', '', $logoutTarget);
         }
 
         return $this->redirect()
