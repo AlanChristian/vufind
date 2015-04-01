@@ -85,7 +85,7 @@ class VudlController extends AbstractVuDL
     protected function getPage($parent, $child)
     {
         // GET LISTS
-        $lists = $this->getConnector()->getOrderedMembers($parent);
+        $lists = array_reverse($this->getConnector()->getOrderedMembers($parent));
         // GET LIST ITEMS
         foreach ($lists as $list=>$list_data) {
             $items = $this->getConnector()->getOrderedMembers($list_data);
@@ -181,7 +181,7 @@ class VudlController extends AbstractVuDL
             'outline' => $this->getOutline($id, $start, $end-$start),
             'start'  => (int)$start
         );
-        $data['outline'] = current($data['outline']['lists']);
+        $data['outline'] = $data['outline']['lists'][0];
         if (isset($data['outline'])) {
             $data['length'] = count($data['outline']);
         } else {
@@ -283,7 +283,7 @@ class VudlController extends AbstractVuDL
         $view->parents = $parents;
         if ($id != $root) {
             $view->parentID = $root;
-            $view->breadcrumbEnd = $outline['lists'][0][$view->initPage]['label'];
+            $view->breadcrumbEnd = $outline['lists'][0][$view->page]['label'];
         }
         $view->pagelength = $this->getConnector()->getPageLength();
         return $view;
@@ -429,7 +429,7 @@ class VudlController extends AbstractVuDL
         if ($index == -1) {
             return $this->redirect()
                 ->toRoute('collection', array('id'=>$params['trail']));
-        } elseif (isset($params['prev'])) {
+        } elseif (isset($params['prev_x'])) {
             return $this->redirect()->toRoute(
                 'vudl-record', array('id'=>$members[($index-1)%count($members)])
             );
