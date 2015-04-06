@@ -1,4 +1,4 @@
-/*global Cookies, path, vufindString, Lightbox */
+/*global Cookies, vufindString */
 
 var _CART_COOKIE = 'vufind_cart';
 var _CART_COOKIE_SOURCES = 'vufind_cart_src';
@@ -55,32 +55,28 @@ function addItemToCart(id,source) {
 function removeItemFromCart(id,source) {
   var cartItems = getCartItems();
   var cartSources = getCartSources();
-  // Find 
-  var cartIndex = cartItems.indexOf(String.fromCharCode(65+cartSources.indexOf(source))+id);
-  if(cartIndex > -1) {
-    var sourceIndex = cartItems[cartIndex].charCodeAt(0)-65;
-    var cartItem = cartItems[cartIndex];
-    var saveSource = false;
-    for(var i=cartItems.length;i--;) {
-      if(i==cartIndex) {
-        continue;
-      }
-      // If this source is shared by another, keep it
-      if(cartItems[i].charCodeAt(0)-65 == sourceIndex) {
-        saveSource = true;
-        break;
-      }
-    }
-    cartItems.splice(cartIndex,1);
-    // Remove unused sources
-    if(!saveSource) {
-      var oldSources = cartSources.slice(0);
-      cartSources.splice(sourceIndex,1);
-      // Adjust source index characters
+  for(var i=cartItems.length;i--;) {
+    if(cartItems[i].substr(1) == id && cartSources[cartItems[i].charCodeAt(0)-65] == source) {
+      var saveSource = false;
       for(var j=cartItems.length;j--;) {
-        var si = cartItems[j].charCodeAt(0)-65;
-        var ni = cartSources.indexOf(oldSources[si]);
-        cartItems[j] = String.fromCharCode(65+ni)+cartItems[j].substring(1);
+        if(j==i) {
+          continue;
+        }
+        if(cartItems[j].charCodeAt(0)-65 == i) {
+          saveSource = true;
+          break;
+        }
+      }
+      cartItems.splice(i,1);
+      if(!saveSource) {
+        cartSources.splice(i,1);
+      }
+      if(cartItems.length > 0) {
+        Cookies.setItem(_CART_COOKIE, $.unique(cartItems).join(_CART_COOKIE_DELIM), false, '/');
+        Cookies.setItem(_CART_COOKIE_SOURCES, $.unique(cartSources).join(_CART_COOKIE_DELIM), false, '/');
+      } else {
+        Cookies.removeItem(_CART_COOKIE, '/');
+        Cookies.removeItem(_CART_COOKIE_SOURCES, '/');
       }
       $('#cartItems strong').html(parseInt($('#cartItems strong').html(), 10)-1);
       return true;
