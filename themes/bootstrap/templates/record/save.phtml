@@ -24,9 +24,7 @@
   <? $showLists = (!empty($this->nonContainingLists) || (empty($this->containingLists) && empty($this->nonContainingLists))); ?>
 
   <div class="control-group">
-    <? if ($showLists): ?>
-        <label class="control-label" for="save_list"><?=$this->transEsc('Choose a List') ?></label>
-    <? endif; ?>
+    <label class="control-label" for="save_list"><?=$this->transEsc('Choose a List') ?></label>
     <div class="controls">
     <? if ($showLists): ?>
       <select class="pull-left" id="save_list" name="list">
