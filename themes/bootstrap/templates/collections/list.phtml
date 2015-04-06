@@ -3,7 +3,7 @@
   <li>
     <a href="<?=$this->url('collection', array('id' => $item['value']))?>">
       <strong><?=$this->escapeHtml($item['displayText'])?></strong>
-      <span class="pull-right small">
+      <span class="pull-right small" id="cor">
         <?=$item['count']?> <?=$this->transEsc('items')?>
         <i class="icon-angle-right"></i>
       </span>
