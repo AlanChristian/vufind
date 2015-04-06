@@ -1,0 +1,367 @@
+a1c65c/* general styles */
+html, body {
+  height: 100%;
+  width: 100%;
+  line-height: none;
+}
+
+/* correcoes */
+	
+ @media (min-width: 768px) {
+ /* .sidebar {
+    position: fixed;
+    top: 51px; /* use a top offset */
+    left: 0;
+    bottom: 0;
+    z-index: 1000;
+    display: block;
+    padding: 20px 20px 20px; /* 50px less on padding-top now we have a top offset*/
+    overflow: auto; /* make it scrollable */
+    background-color: #f5f5f5;
+    border-right: 1px solid #eee;
+  }
+}
+*/
+
+.fixo {
+    position:fixed;
+    margin-top: 0px !important;
+}
+
+.pad-section-bug {
+	margin-bottom:30px
+	}
+
+/* Colors */
+
+.cl-green-light {color: #ceefbb;}
+.cl-green-dark {color: #a1c65c;}
+.cl-gray-light {color: #989898;}
+.cl-gray-dark {color: #4c4c4c;}
+.cl-blue-light {color:#bed7ff;}
+.cl-blue-dark {color: #242e47;}
+.cl-white {color: #fff;}
+.cl-black {color: #000;}
+.bkg-green-light-light {background-color:#e6f4cd;}
+.bkg-green-light {background-color: #ceefbb;}
+.bkg-green-dark {background-color: #a1c65c;}
+.bkg-gray-light {background-color: #989898;}
+.bkg-gray-dark {background-color: #4c4c4c;}
+.bkg-blue-light {background-color:#bed7ff;}
+.bkg-blue-dark {background-color: #242e47;}
+.bkg-white {background-color: #fff;}
+.bkg-black {background-color: #000;}
+
+
+/* padded section */
+.pad-section {
+  padding: 20px 0;
+}
+
+/* vertical-centered text */
+.text-vcenter {
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+}
+.text-vcenter h1 {
+  font-size: 4.5em;
+  font-weight: 700;
+  margin: 0;
+  padding: 0;
+}
+
+/* additional sections */
+#home {
+  background-color: #fff; 
+  display: table;
+  height: 30%;
+  position: relative;
+  width: 100%;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+#menu1 {
+    background-color: #e7e7e7;
+}
+
+#menu2 li {
+    background-color: #fff;
+}
+
+.nav > li {
+  border-right: 2px solid #fff;
+}
+
+.bloco {
+background:#dbdbdb;
+margin: auto;
+padding:20px;
+-moz-border-radius:7px;
+-webkit-border-radius:7px;
+ border-radius:7px;
+}
+
+#bkg-about {
+background: url(../images/bkg_about2.jpg) no-repeat center center fixed; 
+height: auto;
+-moz-border-radius:7px;
+-webkit-border-radius:7px;
+ border-radius:7px;
+}
+
+#bkg-result {
+background: url(../images/bkg_about.jpg) no-repeat center center fixed; 
+height: auto;
+-moz-border-radius:7px;
+-webkit-border-radius:7px;
+ border-radius:7px;
+}
+
+#services {
+ background: url(../images/bkg_services.jpg) no-repeat center center fixed; 
+}
+
+#services .glyphicon {
+  border: 2px solid #FFFFFF;
+  border-radius: 50%;
+  display: inline-block;
+  font-size: 60px;
+  height: auto;
+  line-height: 140px;
+  text-align: center;
+  vertical-align: middle;
+  width: 140px;
+}
+
+#information {
+  background: url(../images/bkg_information.jpg) no-repeat center center fixed; 
+  display: table;
+  height: auto;
+  position: relative;
+  width: 100%;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+-moz-border-radius:7px;
+-webkit-border-radius:7px;
+ border-radius:7px;
+}
+
+.page-header {
+  font-size:240%;
+  border-bottom: 0px solid #eee;
+  color: #754d12;
+}
+
+#information .panel {
+  opacity: 0.85;
+}
+
+#google_map {
+  height: 500px;
+}
+
+#texto {
+ width: 800px;
+ text-align: justify;
+}
+
+footer {
+  padding: 20px 0;
+}
+footer .glyphicon {
+  color: #333333;
+  font-size: 60px;
+}
+footer .glyphicon:hover {
+  color: #306d9f;
+}
+
+
+/* Panels */
+
+.panel-default > .panel-heading {
+font-size:120%;
+font-weight:bold;
+color: #fff;
+background-color: #a1c65c;
+}
+
+.panel>panel-heading {
+-moz-border-radius:0;
+-webkit-border-radius:0;
+ border-radius:0;
+}
+
+.panel-default {
+border-color: #a1c65c;
+}
+
+/* Botões de controle */
+
+.btn-default {
+	color: #fff;
+	background-color: #4c4c4c;
+	border:0;
+}
+
+.btn-default:hover,
+.btn-default:focus,
+.btn-default.focus,
+.btn-default:active,
+.btn-default.active,
+.open > .dropdown-toggle.btn-default {
+	color: #fff;
+  background-color: #787878;
+	border:0;
+}
+
+.btn-default .badge {
+  color: #fff;
+  background-color: #fff;
+}
+
+/* Formularios */
+
+.form-control:focus {
+  border-color: #a1c65c;
+  outline: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(179, 233, 102, .6);
+          box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(179, 233, 102, .6);
+}
+
+.table-green {
+  border-color: #a1c65c;
+}
+
+/* Textos */
+
+h6 {
+ color:#a1c65c;
+}
+
+h7 {
+ color:#fff;
+}
+
+h6, h7 {
+ font-weight: bold;
+ text-transform: uppercase;
+}
+
+p {
+line-height:200%;
+}
+
+.p-text {
+margin:20px;
+}
+
+.panel-search {
+	font-size:12px;
+	}
+
+.flex-video {
+ position: relative;
+ padding-top: 25px;
+ padding-bottom: 67.5%;
+ height: 0;
+ margin-bottom: 16px;
+ overflow: hidden;
+}
+ 
+.flex-video.widescreen { padding-bottom: 57.25%; }
+.flex-video.vimeo { padding-top: 0; }
+.flex-video iframe,
+.flex-video object,
+.flex-video embed {
+ position: absolute;
+ top: 0;
+ left: 0;
+ width: 100%;
+ height: 100%;
+}
+
+@media only screen and (max-device-width: 800px), only screen and (device-width: 1024px) and (device-height: 600px), only screen and (width: 1280px) and (orientation: landscape), only screen and (device-width: 800px), only screen and (max-width: 767px) {
+.flex-video { padding-top: 0; }
+}
+
+.pad-section {
+  padding: 20px 0;
+}
+
+.pad-section-bug {
+margin-bottom:30px
+}
+
+.centered {
+    margin: 0 auto !important;
+    float: none !important;
+}
+
+/* Panels */
+.panel-result {
+  border: 1px solid #a1c65c;
+-moz-border-radius:7px;
+-webkit-border-radius:7px;
+ border-radius:7px;
+}
+
+.sidebar {
+background-color:#fff;
+color: #fff;
+border: 1px solid #a1c65c;
+-moz-border-radius:7px;
+-webkit-border-radius:7px;
+ border-radius:7px;
+}
+
+#cor {
+background-color: #696969;
+-moz-border-radius:5px;
+-webkit-border-radius:5px;
+padding-top: 3px;
+padding-bottom: 3px;
+padding-right: 3px;
+padding-left: 3px;
+}
+
+a {
+color: #0069cd;
+}
+
+a:hover {
+color: #0069cd;
+}
+
+.title {
+font-weight:bold;
+color:#89a55b;
+}
+
+.table-striped tbody > tr:nth-child(odd) > td,
+.table-striped tbody > tr:nth-child(odd) > th {
+  background-color: #ffffff;
+}
+
+.sidebar > .badge {
+  color: #fff;
+  background-color: #333;
+}
+
+.panel-heading {
+font-size:100%;
+font-weight:bold;
+color: #fff;
+background-color: #a1c65c;
+padding:10px;
+}
+
+h3 {
+color:#89a55b;
+}
