@@ -46,7 +46,7 @@
 
   <? if (count($this->tabs) > 0): ?>
     <a name="tabnav"></a>
-    <ul class="recordTabs nav nav-tabs">
+    <ul class="recordTabs nav nav-tabs tab-container2">
       <? foreach ($this->tabs as $tab => $obj): ?>
       <? // add current tab to breadcrumbs if applicable:
         $desc = $obj->getDescription();
