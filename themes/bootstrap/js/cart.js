@@ -52,15 +52,6 @@ function addItemToCart(id,source) {
   $('#cartItems strong').html(parseInt($('#cartItems strong').html(), 10)+1);
   return true;
 }
-function uniqueArray(op) {
-  var ret = [];
-  for(var i=0;i<op.length;i++) {
-    if(ret.indexOf(op[i]) < 0) {
-      ret.push(op[i]);
-    }
-  }
-  return ret;
-}
 function removeItemFromCart(id,source) {
   var cartItems = getCartItems();
   var cartSources = getCartSources();
@@ -91,19 +82,13 @@ function removeItemFromCart(id,source) {
         var ni = cartSources.indexOf(oldSources[si]);
         cartItems[j] = String.fromCharCode(65+ni)+cartItems[j].substring(1);
       }
+      $('#cartItems strong').html(parseInt($('#cartItems strong').html(), 10)-1);
+      return true;
     }
-    if(cartItems.length > 0) {
-      Cookies.setItem(_CART_COOKIE, uniqueArray(cartItems).join(_CART_COOKIE_DELIM), false, '/');
-      Cookies.setItem(_CART_COOKIE_SOURCES, uniqueArray(cartSources).join(_CART_COOKIE_DELIM), false, '/');
-    } else {
-      Cookies.removeItem(_CART_COOKIE, '/');
-      Cookies.removeItem(_CART_COOKIE_SOURCES, '/');
-    }
-    $('#cartItems strong').html(parseInt($('#cartItems strong').html(), 10)-1);
-    return true;
   }
   return false;
 }
+
 function registerUpdateCart($form) {
   if($form) {
     $("#updateCart, #bottom_updateCart").unbind('click').click(function(){
@@ -146,26 +131,6 @@ function registerUpdateCart($form) {
   }
 }
 
-// Ajax cart submission for the lightbox
-function cartSubmit($form) {
-  var submit = $form.find('input[type="submit"][clicked=true]').attr('name');
-  if (submit == 'print') {
-    //redirect page
-    var checks = $form.find('input.checkbox-select-item:checked');
-    if(checks.length > 0) {
-      var url = path+'/Records/Home?print=true';
-      for(var i=0;i<checks.length;i++) {
-        url += '&id[]='+checks[i].value;
-      }
-      document.location.href = url;
-    } else {
-      Lightbox.displayError(vufindString['bulk_noitems_advice']);
-    }
-  } else {
-    Lightbox.submit($form, Lightbox.changeContent);
-  }
-}
-
 $(document).ready(function() {
   // Record buttons
   var cartId = $('#cartId');
@@ -187,61 +152,4 @@ $(document).ready(function() {
     var $form = $('form[name="bulkActionForm"]');
     registerUpdateCart($form);
   }
-  
-  // Setup lightbox behavior
-  // Cart lightbox
-  $('#cartItems').click(function() {
-    return Lightbox.get('Cart','Cart');
-  });
-  Lightbox.addFormHandler('cartForm', function(evt) {
-    cartSubmit($(evt.target));
-    return false;
-  });
-  Lightbox.addFormCallback('bulkEmail', function() {
-    Lightbox.confirm(vufindString['bulk_email_success']);
-  });
-  Lightbox.addFormCallback('bulkSave', function() {
-    // After we close the lightbox, redirect to list view
-    Lightbox.addCloseAction(function() {
-      document.location.href = path+'/MyResearch/MyList/'+Lightbox.lastPOST['list'];
-    });
-    Lightbox.confirm(vufindString['bulk_save_success']);
-  });
-  Lightbox.addFormHandler('exportForm', function(evt) {
-    $.ajax({
-      url: path + '/AJAX/JSON?' + $.param({method:'exportFavorites'}),
-      type:'POST',
-      dataType:'json',
-      data:Lightbox.getFormData($(evt.target)),
-      success:function(data) {
-        if(data.data.needs_redirect) {
-          document.location.href = data.data.result_url;
-        } else {
-          Lightbox.changeContent(data.data.result_additional);
-        }
-      },
-      error:function(d,e) {
-        //console.log(d,e); // Error reporting
-      }
-    });
-    return false;
-  });
-  Lightbox.addCloseAction(function() {
-    // Update cart items (add to cart, remove from cart, cart lightbox interface)
-    var cartCount = $('#cartItems strong');
-    if(cartCount.length > 0) {
-      var cart = getFullCartItems();
-      var id = $('#cartId');
-      if(id.length > 0) {
-        id = id.val();
-        $('#cart-add,#cart-remove').addClass('hidden');
-        if(cart.indexOf(id) > -1) {
-          $('#cart-remove').removeClass('hidden');
-        } else {
-          $('#cart-add').removeClass('hidden');
-        }
-      }
-      cartCount.html(cart.length);
-    }
-  });
 });
