@@ -2,12 +2,15 @@
 return array(
     'extends' => 'root',
     'css' => array(
+        'bootstrap.css',
         'bootstrap.min.css',
         'bootstrap-responsive.min.css',
+        'bootstrap-responsive.css',
         'font-awesome.css',
         'font-awesome-ie7.min.css',
         'slider.css',
         'screen.css',
+        'style.css',
         'print.css:print'
     ),
     'js' => array(
