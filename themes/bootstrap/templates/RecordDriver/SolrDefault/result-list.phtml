@@ -1,17 +1,10 @@
 <div class="row-fluid result<?=$this->driver->supportsAjaxStatus()?' ajaxItem':''?>">
-  <input type="hidden" value="<?=$this->escapeHtml($this->driver->getUniqueID())?>" class="hiddenId" />
-  <input type="hidden" value="<?=$this->escapeHtml($this->driver->getResourceSource())?>" class="hiddenSource" />
-  <div class="span2 text-center left">
-    <a href="<?=$this->recordLink()->getUrl($this->driver)?>" class="title">
-      <? if ($summThumb = $this->record($this->driver)->getThumbnail()): ?>
-        <img class="img-polaroid" src="<?=$this->escapeHtml($summThumb)?>" alt="<?=$this->transEsc('Cover Image')?>"/>
-      <? else: ?>
-        <img class="img-polaroid" src="<?=$this->url('cover-unavailable')?>" alt="<?=$this->transEsc('No Cover Image')?>"/>
-      <? endif; ?>
-    </a>
-  </div>
-  <div class="span7 middle">
-    <div>
+<br/>
+<input type="hidden" value="<?=$this->escapeHtml($this->driver->getUniqueID())?>" class="hiddenId" />
+<input type="hidden" value="<?=$this->escapeHtml($this->driver->getResourceSource())?>" class="hiddenSource" />
+ 
+  <div  id="texto" class="span7 middle">
+    <div class="titlao"><p>
       <a href="<?=$this->recordLink()->getUrl($this->driver)?>" class="title">
       <?
         $summHighlightedTitle = $this->driver->getHighlightedTitle();
@@ -25,7 +18,7 @@
         }
       ?>
       </a>
-    </div>
+    </p></div>
 
     <div>
       <? if($this->driver->isCollection()): ?>
@@ -40,7 +33,10 @@
               : $this->escapeHtml($summAuthor);
         ?></a>
         <? endif; ?>
-
+       <div><p>Co-autor: <a href="#">Fulano de Tal</a></p></div>
+       <div id="Detalhar" style="display:none">Resumo: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum at blandit dolor. Fusce volutpat ante at arcu efficitur sollicitudin. Donec at ante at nulla consequat tempus. Aliquam maximus massa sed ligula vestibulum, accumsan iaculis risus sollicitudin. Praesent enim erat, consequat non dolor nec, scelerisque luctus dui. Sed vulputate varius nunc eu mattis. Etiam tempor pretium turpis blandit ornare. Duis sapien magna, tempor id scelerisque ut, dictum vitae odio. Vestibulum pharetra finibus ipsum et ultricies.</div>
+	   
+	   <span class="glyphicon glyphicon-plus" aria-hidden="true"><button title="Clique para mostrar/ocultar" type="button" onclick="if(document.getElementById('Detalhar') .style.display=='none') {document.getElementById('Detalhar') .style.display=''}else{document.getElementById('Detalhar') .style.display='none'}">Detalhar</span></button>
         <? $journalTitle = $this->driver->getContainerTitle(); $summDate = $this->driver->getPublicationDates(); ?>
         <? if (!empty($journalTitle)): ?>
           <?=!empty($summAuthor) ? '<br />' : ''?>
@@ -75,7 +71,7 @@
          <? endif; ?>
         <br/>
       <? endif; ?>
-      
+
       <div class="callnumAndLocation ajax-availability hide">
         <? if ($this->driver->supportsAjaxStatus()): ?>
           <strong class="hideIfDetailed"><?=$this->transEsc('Call Number')?>:</strong>
@@ -115,7 +111,7 @@
         <? endif; ?>
       <? endif; ?>
 
-      <?=str_replace('class="', 'class="label label-info ', $this->record($this->driver)->getFormatList())?>
+      <?=str_replace('class="', 'class="label label-info hide ', $this->record($this->driver)->getFormatList())?>
       
       <? if (!$openUrlActive && empty($urls) && $this->driver->supportsAjaxStatus()): ?>
         <span class="status ajax-availability small hide">
@@ -126,42 +122,6 @@
     </div>
   </div>
 
-  <div class="span2 noprint">
-    <? /* Display qrcode if appropriate: */ ?>
-    <? if ($QRCode = $this->record($this->driver)->getQRCode("results")): ?>
-      <?
-        // Add JS Variables for QrCode
-        $this->jsTranslations()->addStrings(array('qrcode_hide' => 'qrcode_hide', 'qrcode_show' => 'qrcode_show'));
-      ?>
-      <span class="hidden-phone">
-        <i class="icon-qrcode"></i> <a href="<?=$this->escapeHtml($QRCode);?>" class="qrcodeLink"><?=$this->transEsc('qrcode_show')?></a>
-        <div class="qrcode hide">
-          <img alt="<?=$this->transEsc('QR Code')?>" class="img-polaroid" src="<?=$this->escapeHtml($QRCode);?>"/>
-        </div><br/>
-      </span>
-    <? endif; ?>
-    
-    <? /* Add to favorites */ ?>
-    <i class="icon-heart"></i> <a href="<?=$this->recordLink()->getActionUrl($this->driver, 'Save')?>" class="save-record modal-link" id="<?=$this->driver->getUniqueId() ?>" title="<?=$this->transEsc('Add to favorites')?>"><?=$this->transEsc('Add to favorites')?></a><br/>
-
-    <? /* Saved lists */ ?>
-    <div class="savedLists alert alert-info hide">
-      <strong><?=$this->transEsc("Saved in")?>:</strong>
-    </div>
-
-    <? /* Hierarchy tree link */ ?>
-    <? $trees = $this->driver->tryMethod('getHierarchyTrees'); if (!empty($trees)): ?>
-      <? foreach ($trees as $hierarchyID => $hierarchyTitle): ?>
-        <div class="hierarchyTreeLink">
-          <input type="hidden" value="<?=$this->escapeHtml($hierarchyID)?>" class="hiddenHierarchyId" />
-          <i class="icon-sitemap"></i>
-          <a class="hierarchyTreeLinkText modal-link" href="<?=$this->recordLink()->getTabUrl($this->driver, 'HierarchyTree')?>?hierarchy=<?=urlencode($hierarchyID)?>#tabnav" title="<?=$this->transEsc('hierarchy_tree')?>">
-            <?=$this->transEsc('hierarchy_view_context')?><? if (count($trees) > 1): ?>: <?=$this->escapeHtml($hierarchyTitle)?><? endif; ?>
-          </a>
-        </div>
-      <? endforeach; ?>
-    <? endif; ?>
-  </div>
 </div>
-
+     <br/> 
 <?=$openUrl?'<span class="Z3988" title="'.$this->escapeHtml($openUrl).'"></span>':''?>
