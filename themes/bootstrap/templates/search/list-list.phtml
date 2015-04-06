@@ -1,9 +1,42 @@
 <? if (!isset($this->indexStart)) $this->indexStart = 0; ?>
 <? $i = $this->indexStart; foreach ($this->results->getResults() as $current):
   $recordNumber = $this->results->getStartRecord()+$i-$this->indexStart; ?>
-  <hr/>
+  <br/>
+<div class="panel-result">
+<!-- Table -->
+<div class="panel-heading">[pt] Politicas Publicas e a Formação do Medico: bioetica e humanização da medicina </div>
+        <table class="table table-condensed table-responsive table-hover">
+          <tr class="bkg-green-light-light">
+            <th style="width:20%">Autor</th>
+            <td><a href="#">José Bortolaz Neto <span class="glyphicon glyphicon-file cl-green-dark"></span></a></td>
+          </tr>
+          <tr>
+            <th>Contribuidores</th>
+            <td><a href="#">Evelcy Monteiro Machado (Orientador)</a> <span class="glyphicon glyphicon-file cl-green-dark"></span> <br />
+              <a href="#">Lucyenne Alcantara Ribeiro Nunes (Co-Orientadora)</a> <span class="glyphicon glyphicon-file cl-green-dark"></span></td>
+          </tr>
+          <tr>
+            <th>Instituição de Defesa</th>
+            <td><a href="#">UNIVERSIDADE TUIUTI DO PARANÁ (www.utp.br) <span class="glyphicon glyphicon-share-alt cl-green-dark"></span></a></td>
+          </tr>
+          <tr>
+            <th>Assunto (s)</th>
+            <td><a href="#">História da Medicina</a>, <a href="#">Políticas Públicas</a>, <a href="#">Ensino Superior</a>, <a href="#">Bioética</a>, <a href="#">Formação Médica</a>, <a href="#">Public Politics</a>, <a href="#">Medicine History</a>, <a href="#">Higher Education</a>,<a href="#"> bioethics</a>, <a href="#">Medical Formation</a></td>
+          </tr>
+          <tr>
+            <th>Arquivos</th>
+            <td>POLÍTICAS PÚBLICAS E A FORMAÇÃO DO MÉDICO <span class="glyphicon glyphicon-floppy-save cl-green-dark"></span>
+			<span class="pull-right"><i class="icon-bookmark"></i><span class="glyphicon glyphicon-bookmark"></span><a href =''>Adicionar aos favoritos</a></span>
+			
+			</td>
+			
+          </tr>
+        </table>
+<!-- / Table -->
   <div id="result<?=$i++ ?>" class="row-fluid clearfix">
-    <label class="checkbox pull-left small"><? if ($this->cart()->isActive()): ?><?=$this->record($current)->getCheckbox()?><? endif; ?><?=$recordNumber?></label>
     <?=$this->record($current)->getSearchResult('list')?>
+  </div>
+  
+  
   </div>
 <? endforeach; ?>
