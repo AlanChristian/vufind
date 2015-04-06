@@ -1,76 +1,162 @@
-<?
-  // Set page title.
-  $this->headTitle($this->translate('Search Home'));
-
-  // Disable top search box -- this page has a special layout.
-  $this->layout()->searchbox = false;
-
-  // Set default value if necessary:
-  if (!isset($this->searchClassId)) {
-    $this->searchClassId = 'Solr';
-  }
-
-  // Load search actions and settings (if any):
-  $options = $this->searchOptions($this->searchClassId);
-  $basicSearch = $options->getSearchAction();
-  $advSearch = $options->getAdvancedSearchAction();
-  
-  $this->layout()->breadcrumbs = false;
-?>
-<div class="searchHomeContent">
-  <? if ($this->ils()->getOfflineMode() == "ils-offline"): ?>
-    <div class="alert alert-warning">
-      <h2><?=$this->transEsc('ils_offline_title')?></h2>
-      <p><strong><?=$this->transEsc('ils_offline_status')?></strong></p>
-      <p><?=$this->transEsc('ils_offline_home_message')?></p>
-      <? $supportEmail = $this->escapeHtml($this->systemEmail()); ?>
-      <p><a href="mailto:<?=$supportEmail?>"><?=$supportEmail?></a></p>
+<!--  NAVBAR CONTENT -->
+<nav class="navbar navbar-default navbar-fixed-top bkg-white" role="navigation">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="brand" href="http://192.168.56.101/vufind/"><img src="<?=$this->imageLink('/logo_bdtd_navbar.png')?>" alt="Brand" />
+	  </a>
     </div>
-  <? endif; ?>
-  <div class="hero-unit">
-    <?=$this->render("search/searchbox.phtml")?>
+    <div class="collapse nav-collapse" id="bs-example-nav-collapse-1">
+      <ul id="menu1" class="nav navbar">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown"> A BDTD <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#">Equipe BDTD</a></li>
+            <li><a href="#">TEDE</a></li>
+            <li><a href="#">Faca parte da BDTD</a></li>
+            <li><a href="#">Funcionamento</a></li>
+            <li><a href="#">Breve historico</a></li>
+            <li class="divider"></li>
+            <li><a href="#">Links relacionados</a></li>
+          </ul>
+        </li>
+        <li><a href="#">Instituicoes</a></li>
+        <li><a href="#">Indicadores</a></li>
+      </ul>
+<ul class="nav navbar pull-right ">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="icon icon-user cl-green-dark"></span> Washington Ribeiro <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#">Minhas Configuracoes</a></li>
+            <li><a href="#">Meus Favoritos</a></li>
+            <li><a href="#">Servico de referencia</a></li>
+            <li class="divider"></li>
+            <li><a href="#">Sair</a></li>
+          </ul>
+        </li>
+      </ul>
+      <ul class="nav navbar pull-right">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="icon icon-question-sign cl-green-dark"></span> Ajuda <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#">Dicas de busca</a></li>
+            <li><a href="#">Historico de buscas</a></li>
+            <li><a href="#">FAQs</a></li>
+          </ul>
+        </li>
+      </ul>
+      <ul class="nav navbar navbar-right pull-right">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="icon icon-globe cl-green-dark"></span> Idioma <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#">Portugues (Brasil)</a></li>
+            <li class="divider"></li>
+            <li><a href="#">English</a></li>
+            <li><a href="#">Espanhol</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
   </div>
-</div>
+</nav>
+<br />
+<!-- / Navbar -->
 
-<? $facetList = is_object($this->results) ? $this->results->getFacetList() : array(); if (isset($facetList) && is_array($facetList)): ?>
-<div class="row-fluid">
-  <? foreach ($facetList as $field => $details): ?>
-    <? $sortedList = $this->sortFacetList($this->results, $field, $details['list'], $basicSearch); ?>
-    <div class="<?=$field=='callnumber-first' ? 'span6' : 'span3' ?>">
-      <p class="lead"><?=$this->transEsc('home_browse') . ' ' . $this->transEsc($details['label'])?></p>
-      <div class="row-fluid">
-        <ul class="unstyled<? if ($field == "callnumber-first"): ?> span6<?endif?>">
-        <? /* Special case: two columns for LC call numbers... */ ?>
-        <? if ($field == "callnumber-first"): ?>
-          <? $i = 0; foreach ($sortedList as $url => $value): ?>
-            <li><a href="<?=$url?>"><?=$this->escapeHtml($value)?></a></li>
-            <? if (++$i == 10): ?>
-              </ul><ul class="unstyled span6">
-            <? endif; ?>
-          <? endforeach; ?>
-        <? /* Special case: collections */ ?>
-        <? elseif ($field == 'hierarchy_top_title'): ?>
-          <? $i = 0; foreach ($sortedList as $url => $value): ?>
-            <? if (++$i > 10): ?>
-              <li><a href="<?=$this->url('collections-home')?>"><strong><?=$this->transEsc("More options")?>...</strong></a></li>
-              <? break; ?>
-            <? else: ?>
-              <li><a href="<?=$this->url('collections-bytitle')?>?title=<?=urlencode($value)?>"><?=$this->escapeHtml($value)?></a></li>
-            <? endif; ?>
-          <? endforeach; ?>
-        <? else: ?>
-          <? $i = 0; foreach ($sortedList as $url => $value): ?>
-            <? if (++$i > 10): ?>
-              <li><a href="<?=$this->url($advSearch)?>"><strong><?=$this->transEsc("More options")?>...</strong></a></li>
-              <? break; ?>
-            <? else: ?>
-              <li><a href="<?=$url?>"><?=$this->escapeHtml($value)?></a></li>
-            <? endif; ?>
-          <? endforeach; ?>
-        <? endif; ?>
-        </ul>
+<!-- Apresentacao -->
+<div id="bkg-about" class="pad-section cl-white bkg-green-dark">
+  <div class="container">
+    <div class="row-fluid">
+      <div class="span6">
+        <div class="flex-video widescreen" style="margin: 0 auto;text-align:center;">
+          <iframe allowfullscreen="" src="http://www.youtube.com/embed/bu31z_Tpmzk?feature=player_detailpage" frameborder="0"></iframe>
+        </div>
+      </div>
+      <div class="span6">
+        <h3>Apresentacao</h3>
+        <p class="p-text">O Ibict coordena o projeto da Biblioteca Digital Brasileira de Teses e Dissertacoes (BDTD), que integra os sistemas de informacao de teses e dissertacoes existentes nas instituicoes de ensino e pesquisa brasileiras, e tambem estimula o registro e a publicacao de teses e dissertacoes em meio eletronico. Este projeto - iniciativa inovadora do IBICT, em parceria com as instituicoes brasileiras de ensino e pesquisa - possibilita que a comunidade brasileira de C&T publique suas teses e dissertacoes produzidas no pais e no exterior, dando maior visibilidade a producao cientifica nacional.</p>
       </div>
     </div>
-  <? endforeach; ?>
+  </div>
 </div>
+<br />
+<!-- /Apresentacao -->
+
+<!-- Nuvem de TAGs -->
+<div id="services" class="pad-section">
+  <div class="container">
+        <h3>Tags mais consultadas</h3>
+        <div style="_height:px; width:px;background-color:#FFFFFF;font-family:Arial; border: 1px solid #FFFFFF; text-align:left;">
+          <div style="padding:10px;"> <a href="#" style="font-size:19px;text-decoration:none; color: #039FAF;">PSICOLOGIA SOCIAL</a> <a href="##" style="font-size:8px;text-decoration:none; color: #87A800;">PROCESSO ELEITORAL</a> <a href="#" style="font-size:38px;text-decoration:none; color: #FF7600;">FACULDADES</a> <a href="#" style="font-size:23px;text-decoration:none; color: #039FAF;">AGROINDUSTRIA</a> <a href="#" style="font-size:34px;text-decoration:none; color: #FF7600;">ANALISE INSTITUCIONAL</a> <a href="#" style="font-size:42px;text-decoration:none; color: #039FAF;">DISSERTACOES</a> <a href="#" style="font-size:12px;text-decoration:none; color: #039FAF;">PRAGMATISMO</a> <a href="#" style="font-size:19px;text-decoration:none; color: #87A800;">DESENVOLVIMENTO SUSTENTAVEL</a> <a href="#" style="font-size:8px;text-decoration:none; color: #FF7600;">TECNOLOGIA</a> <a href="#" style="font-size:42px;text-decoration:none; color: #87A800;">EDUCACAO</a> <a href="#" style="font-size:16px;text-decoration:none; color: #FF7600;">TECNOLOGIA DE PRODUCAO</a> <a href="" style="font-size:23px;text-decoration:none; color: #DE2159;">FARMACIA</a> <a href="#" style="font-size:27px;text-decoration:none; color: #039FAF;">ADMINISTRACAO</a> <a href="#" style="font-size:34px;text-decoration:none; color: #87A800;">CIENCIA</a> <a href="#" style="font-size:12px;text-decoration:none; color: #FF7600;">REFLORESTAMENTO</a></div>
+        </div>
+  </div>
+</div>
+<br />
+<!-- /Nuvem de TAGs -->
+
+<!-- Informacoes -->
+<div id="information" class="pad-section">
+  <div class="container">
+  <div class="row-fluid">
+      <div class="span6 cl-white">
+      <div class="span12 centered"><img src="<?=$this->imageLink('/icon-communication.png')?>" alt="" /></div>
+      <h3 class="p-text">Contato com a Equipe BDTD</h3>
+      <p class="p-text">IBICT - Sede<br />SAS Q. 5 lote 6 bloco H – 1.andar<br />70070-090 - Brasilia - DF<br />Tel.: +55 (61) 3217-6145 / 6144 / 6238<br />E-mail: bib@ibict.br</p><br />
+      <p class="p-text">Atendimento ao publico: Segunda a sexta, das 9 as 12h e das 14 as 18h</p>
+      </div>
+      <div class="span6 cl-white">
+      <div class="span12 centered"><img src="<?=$this->imageLink('/icon-world.png')?>" alt="" /></div>
+      <h3 class="p-text">Veja a BDTD em outras bases</h3>
+        <p class="p-text cl-white">O Ibict coordena o projeto da Biblioteca Digital Brasileira de Teses e Dissertacoes (BDTD), que integra os sistemas de informacao de teses e dissertacoes existentes nas instituicoes de ensino e pesquisa brasileiras, e tambem estimula o registro e a publicacao de teses e dissertacoes em meio eletronico. Este projeto - iniciativa inovadora do IBICT, em parceria com as instituicoes brasileiras de ensino e pesquisa - possibilita que a comunidade brasileira de C&T publique suas teses e dissertacoes produzidas no país e no exterior, dando maior visibilidade a producao cientifica nacional.</p>
+      </div>
+	  </div>
+  </div>
+</div>
+<!-- / Informacoes --> 
+
+<!-- footer -->
+<div id="services" class="pad-section">
+      <div class="container">
+      <div class="row-fluid">
+        <div class="span4">
+          <img src="<?=$this->imageLink('/logo_ibict.png')?>" alt="" /><br />
+          <p>Setor de Autarquias Sul (SAUS) – 
+Quadra 05 Lote 06 Bloco H – 
+Brasília / DF 
+CEP: 70070-912 
+Brasil</p>
+        </div>
+        <div class="span4">
+		  <img src="<?=$this->imageLink('/bdb.png')?>" alt="" />
+       </div>
+        <div class="span4">
+		  <img src="<?=$this->imageLink('/vufind.png')?>" alt="" />
+        </div>
+      </div>
+    </div>
+</div>
+<!-- /footer -->
+
+<? $account = $this->auth()->getManager(); ?>
+<? if (!isset($this->layout()->renderingError)): ?>
+  <div class="pull-right text-right">
+    <? if (isset($this->layout()->themeOptions) && count($this->layout()->themeOptions) > 1): ?>
+    <form class="form-horizontal" method="post" name="themeForm" action="" id="themeForm">
+      <div class="control-group">
+        <label class="control-label" for="themeForm_ui"><?=$this->transEsc("Theme")?>:</label>
+        <div class="controls">
+          <select onChange="document.themeForm.submit()" id="themeForm_ui" name="ui">
+          <? foreach ($this->layout()->themeOptions as $current): ?>
+            <option value="<?=$this->escapeHtml($current['name'])?>"<?=$current['selected'] ? ' selected="selected"' : ''?>><?=$this->transEsc($current['desc'])?></option>
+          <? endforeach; ?>
+          </select>
+          <noscript><input type="submit" value="<?=$this->transEsc("Set")?>" /></noscript>
+        </div>
+      </div>
+    </form>
+    <? endif; ?>
+    <? if ($this->feedback()->tabEnabled()): ?>
+      <?=$this->render('feedback/form.phtml'); ?>
+    <? endif; ?>
+    <? if (isset($this->layout()->allLangs) && count($this->layout()->allLangs) > 1): ?>
+    <? endif; ?>
+  </div>
 <? endif; ?>
