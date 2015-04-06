@@ -1,3 +1,91 @@
+<!--  Navbar -->
+<nav class="navbar navbar-default navbar-fixed-top bkg-white" role="navigation">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="brand" href="http://192.168.56.101/vufind/"><img src="/vufind/themes/bootstrap/images//logo_bdtd_navbar.png" alt="Brand" />
+	  </a>
+    </div>
+    <div class="collapse nav-collapse" id="bs-example-nav-collapse-1">
+      <ul id="menu1" class="nav navbar">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown"> A BDTD <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#">Equipe BDTD</a></li>
+            <li><a href="#">TEDE</a></li>
+            <li><a href="#">Faca parte da BDTD</a></li>
+            <li><a href="#">Funcionamento</a></li>
+            <li><a href="#">Breve historico</a></li>
+            <li class="divider"></li>
+            <li><a href="#">Links relacionados</a></li>
+          </ul>
+        </li>
+        <li><a href="#">Instituicoes</a></li>
+        <li><a href="#">Indicadores</a></li>
+      </ul>
+<ul class="nav navbar pull-right ">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="icon icon-user cl-green-dark"></span> Washington Ribeiro <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#">Minhas Configuracoes</a></li>
+            <li><a href="#">Meus Favoritos</a></li>
+            <li><a href="#">Servico de referencia</a></li>
+            <li class="divider"></li>
+            <li><a href="#">Sair</a></li>
+          </ul>
+        </li>
+      </ul>
+      <ul class="nav navbar pull-right">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="icon icon-question-sign cl-green-dark"></span> Ajuda <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#">Dicas de busca</a></li>
+            <li><a href="#">Historico de buscas</a></li>
+            <li><a href="#">FAQs</a></li>
+          </ul>
+        </li>
+      </ul>
+      <ul class="nav navbar navbar-right pull-right">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="icon icon-globe cl-green-dark"></span> Idioma <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#">Portugues (Brasil)</a></li>
+            <li class="divider"></li>
+            <li><a href="#">English</a></li>
+            <li><a href="#">Espanhol</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<br />
+<!-- / Navbar -->
+<!-- Header Search -->
+<div id="bkg-result" class="pad-section cl-white bkg-green-dark pad-section-bug">
+<div class="container">
+<h3>Resultado da Busca</h3>
+<table class="table table-condensed table-green">
+  <tr>
+    <th style="width:45%">Palavra-chave:</th>
+    <td>"Bioetica"</td>
+  </tr>
+    <tr>
+    <th>Busca por:</th>
+    <td>Toda a BDTD</td>
+  </tr>
+  <tr>
+    <th>Qtde de documentos recuperados: </th>
+    <td><span class="badge bkg-white cl-green-dark">245</span></td>
+  </tr>
+    <tr>
+    <th>Qtde de documentos exibidos por pagina: </th>
+    <td><span class="badge bkg-white cl-green-dark">20</span> de <span class="badge bkg-white cl-green-dark">245</span></td>
+  </tr>
+</table>
+  </div>
+</div>
+<!-- /Header Search -->
+
 <?
   // Set up page title:
   $lookfor = $this->params->getDisplayQuery();
@@ -61,16 +149,16 @@
       <? else: ?>
         <p class="lead"><?=$this->transEsc('nohit_heading')?></p>
       <? endif; ?>
-    </div>
-
+	
     <? if ($recordTotal > 0): ?>
-      <div class="pull-right">
+      <div class="pull-left">
         <?=$this->render('search/controls/limit.phtml')?>
         <?=$this->render('search/controls/sort.phtml')?>
         <br/>
         <?=$this->render('search/controls/view.phtml')?>
       </div>
     <? endif; ?>
+		  </div>
   </div>
   <? /* End Listing Options */ ?>
 
@@ -103,12 +191,11 @@
       <? endif; ?>
       <?=$this->paginationControl($this->results->getPaginator(), 'Sliding', 'search/pagination.phtml', array('results' => $this->results))?>
     </form>
-
     <div class="searchtools small text-center noprint">
       <strong><?=$this->transEsc('Search Tools')?>:</strong>
       <i class="icon-bell"></i> <a href="<?=$this->results->getUrlQuery()->setViewParam('rss')?>"><?=$this->transEsc('Get RSS Feed')?></a>
       &mdash;
-      <i class="icon-envelope"></i> <a href="<?=$this->url('search-email')?>" class="mailSearch modal-link" id="mailSearch<?=$this->escapeHtml($this->results->getSearchId())?>" title="<?=$this->transEsc('Email this Search')?>"><?=$this->transEsc('Email this Search')?></a>
+      <i class="icon-envelope"></i> <a href="<?=$this->url('search-email')?>" class="mailSearch" id="mailSearch<?=$this->escapeHtml($this->results->getSearchId())?>" title="<?=$this->transEsc('Email this Search')?>"><?=$this->transEsc('Email this Search')?></a>
       &mdash;
       <? if (is_numeric($this->results->getSearchId())): ?>
         <? if ($this->results->isSavedSearch()): ?>
@@ -123,7 +210,7 @@
 <? /* End Main Listing */ ?>
 
 <? /* Narrow Search Options */ ?>
-<div class="<?=$this->layoutClass('sidebar')?>">
+<div class="<?=$this->layoutClass('sidebar')?> sidebar">
   <? foreach ($this->results->getRecommendations('side') as $current): ?>
     <?=$this->recommend($current)?>
   <? endforeach; ?>
