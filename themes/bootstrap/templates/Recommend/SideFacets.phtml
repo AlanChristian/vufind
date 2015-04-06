@@ -52,7 +52,7 @@
         <li class="nav-header"><?=$this->transEsc($cluster['label'])?></li>
         <li>
           <form class="form-inline text-center" action="" name="<?=$this->escapeHtml($title)?>Filter" id="<?=$this->escapeHtml($title)?>Filter">
-            <?=$results->getUrlQuery()->asHiddenFields(array('page' => "/./", 'filter' => "/^{$title}:.*/"))?>
+            <?=$results->getUrlQuery()->asHiddenFields(array('filter' => "/^{$title}:.*/"))?>
             <input type="hidden" name="daterange[]" value="<?=$this->escapeHtml($title)?>"/>
             <div class="row-fluid">
               <label class="span6" for="<?=$this->escapeHtml($title)?>from">
@@ -118,7 +118,7 @@ JS;
           </li>
         <? else: ?>
           <li class="facet<?=$thisFacet['operator'] ?><? if ($i>5): ?> <?=$moreClass ?><?endif ?>">
-            <span class="pull-right small">
+            <span class="pull-right small" id="cor">
               <? if ($allowExclude): ?>
                 <?=number_format($thisFacet['count'])?><a href="<?=$this->currentPath().$results->getUrlQuery()->addFacet($title, $thisFacet['value'], 'NOT') ?>" title="<?=$this->transEsc('exclude_facet') ?>"><i class="icon-remove"></i></a>
               <? else: ?>
@@ -127,7 +127,7 @@ JS;
             </span>
             <a class="main" href="<?=$this->currentPath().$results->getUrlQuery()->addFacet($title, $thisFacet['value'], $thisFacet['operator'])?>">
               <? if($thisFacet['operator'] == 'OR'): ?>
-                <i class="icon-check-empty"></i>
+                <i class="icon-check-empty badge"></i>
               <? endif; ?>
               <?=$this->escapeHtml($thisFacet['displayText'])?>
             </a>
